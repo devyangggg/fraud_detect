@@ -91,4 +91,9 @@ def generate_data(mid,n):
     return vec, y
     
 
-generate_data(1000, 100)
+X, y = generate_data(1000, 100)
+
+X = torch.tensor(X, dtype=torch.float32)
+y = torch.tensor(y, dtype=torch.float32)
+
+X = X.reshape(100, 100, 18)
