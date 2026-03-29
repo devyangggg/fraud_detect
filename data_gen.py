@@ -1,5 +1,5 @@
 import numpy as np
-import sys
+import torch
 
 def generate_snapshot(mid_price):
     rand = np.random.default_rng()
@@ -32,23 +32,25 @@ def generate_window():
         res.append(vec)
 
     res = np.stack(res)
+
     return res
 
+np.shape(generate_window())
         
 
 def generate_spoof_snapshot(mid_price):
-    rand = np.random.default_rng()
+    randnum = np.random.default_rng()
     vec = []
     for i in range(0,3):
-        c_speed = rand.uniform(0.7, 1)
-        price = rand.integers(0,mid_price)
-        quantity = rand.integers(mid_price*1.5,mid_price*2)
+        c_speed = randnum.uniform(0.7, 1)
+        price = randnum.integers(0,mid_price)
+        quantity = randnum.integers(mid_price*1.5,mid_price*2)
         vec.append([price,quantity,c_speed])
 
     for i in range(3,6):
-        c_speed = rand.uniform(0, 0.3)
-        price = rand.integers(mid_price,mid_price*2)
-        quantity = rand.integers(0,mid_price*2)
+        c_speed = randnum.uniform(0, 0.3)
+        price = randnum.integers(mid_price,mid_price*2)
+        quantity = randnum.integers(0,mid_price*2)
         vec.append([-price,quantity,c_speed])
 
     vec = np.vstack(vec)
@@ -91,9 +93,23 @@ def generate_data(mid,n):
     return vec, y
     
 
+generate_data(1000, 100)
+
 X, y = generate_data(1000, 100)
 
 X = torch.tensor(X, dtype=torch.float32)
 y = torch.tensor(y, dtype=torch.float32)
 
 X = X.reshape(100, 100, 18)
+
+from torch.utils.data import TensorDataset, DataLoader, random_split
+
+dataset = TensorDataset(X,y)
+
+tup = DataLoader(dataset,batch_size=32,shuffle=True)
+
+sizeD = len(dataset)
+train_data, test_data = random_split(dataset,[int(sizeD*0.8),int(sizeD*0.2)])
+
+train_data = DataLoader(train_data,batch_size=32,shuffle=True)
+test_data = DataLoader(test_data,batch_size=32,shuffle=True)

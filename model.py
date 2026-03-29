@@ -1,6 +1,3 @@
-# ## LSTM Model
-
-import torch
 import torch.nn as nn
 
 class Anomaly_Detect(nn.Module):
@@ -17,23 +14,4 @@ class Anomaly_Detect(nn.Module):
         
 
 model = Anomaly_Detect()
-    
-
-x = torch.randn(32, 100, 18)  
-print(model(x).shape)          
-
-loss_func = nn.BCEWithLogitsLoss()
-optimiser = torch.optim.Adam(model.parameters(), lr=0.001)
-
-steps = 100
-
-for epoch in range(steps):
-    optimiser.zero_grad()
-    output = model(x)
-    output = output.squeeze()
-    loss = loss_func(output,y)
-    loss.backward()
-    optimiser.step()
-
-    if epoch % 10 == 0:
-        print(f"Epoch {epoch}, Loss: {loss}")
+  
