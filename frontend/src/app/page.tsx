@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 
-const API_URL = "http://localhost:8000/predict";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/predict";
+
 const WINDOW_SIZE = 100;
 const MID_PRICE = 1000;
 
